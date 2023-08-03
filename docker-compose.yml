@@ -1,0 +1,18 @@
+version: "3"
+services:
+  client:
+    build: ./app # Diretório da aplicação Vue.js
+    ports:
+      - "8080:8080" # Porta que será exposta para o client (ajuste conforme necessário)
+    networks:
+      - app-network
+
+  server:
+    build: ./server # Diretório do servidor Node.js
+    ports:
+      - "3000:3000" # Porta que será exposta para o server (ajuste conforme necessário)
+    networks:
+      - app-network
+
+networks:
+  app-network:
