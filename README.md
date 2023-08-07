@@ -29,7 +29,7 @@ Após clonar o projeto, entre no diretório `knights` e execute o comando `docke
 Abaixo é possível visualizar o comando de execução do arquivo de setup:
 
 ```bash
-cd ~/server && docker-compose up
+cd ~/server && docker-compose up --build
 ```
 
 Para realizar o login é necessario passar no body da requisição `username` e `password` conforme exemplo abaixo:
