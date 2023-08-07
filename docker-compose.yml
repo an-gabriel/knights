@@ -3,7 +3,7 @@ services:
   client:
     build: ./app # Diretório da aplicação Vue.js
     ports:
-      - "8080:8080" # Porta que será exposta para o client (ajuste conforme necessário)
+      - "4173:4173" # Porta que será exposta para o client (ajuste conforme necessário)
     networks:
       - app-network
 
@@ -13,6 +13,14 @@ services:
       - "3000:3000" # Porta que será exposta para o server (ajuste conforme necessário)
     networks:
       - app-network
+  mongodb:
+    image: mongo
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongodb_data:/data/db
+volumes:
+  mongodb_data:
 
 networks:
   app-network:
