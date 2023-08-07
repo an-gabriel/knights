@@ -1,26 +1,41 @@
 version: "3"
-services:
-  client:
-    build: ./app # Diretório da aplicação Vue.js
-    ports:
-      - "4173:4173" # Porta que será exposta para o client (ajuste conforme necessário)
-    networks:
-      - app-network
 
-  server:
-    build: ./server # Diretório do servidor Node.js
+services:
+  # Frontend Vue
+  app:
+    build:
+      context: ./app
+      dockerfile: Dockerfile # Se você tiver um Dockerfile específico para o frontend Vue, caso contrário, remova essa linha
     ports:
-      - "3000:3000" # Porta que será exposta para o server (ajuste conforme necessário)
+      - "8080:8080" # Mapeia a porta 8080 do contêiner para a porta 8080 do host
     networks:
-      - app-network
-  mongodb:
-    image: mongo
+      - knights_network
+
+  # Backend Node.js
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile # Se você tiver um Dockerfile específico para o backend Node.js, caso contrário, remova essa linha
     ports:
-      - "27018:27017"
+      - "3001:3000" # Mapeia a porta 3000 do contêiner para a porta 3000 do host
+    depends_on:
+      - mongodb # Especifica que o contêiner do servidor depende do contêiner do MongoDB
+    networks:
+      - knights_network
+
+  # MongoDB
+  mongodb:
+    image: mongo:latest # Usa a imagem oficial do MongoDB no Docker Hub
+    ports:
+      - "27017:27017" # Mapeia a porta 27017 do contêiner para a porta 27017 do host
     volumes:
-      - mongodb_data:/data/db
+      - mongodb_data:/data/db # Mapeia um volume para persistir os dados do MongoDB
+    networks:
+      - knights_network
+
 volumes:
-  mongodb_data:
+  mongodb_data: # Define o volume para o MongoDB
 
 networks:
-  app-network:
+  knights_network: # Cria uma rede personalizada para os contêineres se comunicarem
+    driver: bridge
